@@ -12,7 +12,6 @@ import SwiftData
 struct PrepAIApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,7 +24,7 @@ struct PrepAIApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Text("PrepAI")
         }
         .modelContainer(sharedModelContainer)
     }
