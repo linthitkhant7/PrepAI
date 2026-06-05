@@ -12,6 +12,7 @@ import SwiftData
 struct PrepAIApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
+            Session.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
