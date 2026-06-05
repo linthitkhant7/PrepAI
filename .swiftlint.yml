@@ -1,0 +1,11 @@
+excluded:
+  - PrepAIUITests
+
+disabled_rules:
+  - trailing_whitespace
+
+opt_in_rules:
+  - empty_count
+  - explicit_init
+
+line_length: 120
