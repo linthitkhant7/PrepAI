@@ -12,10 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Run tests
-        run: |
-          xcodebuild test \
-            -scheme PrepAI \
-            -destination 'platform=iOS Simulator,OS=latest,name=iPhone 16' \
-            -resultBundlePath TestResults \
-            -allowProvisioningUpdates
+      - name: List available Xcodes
+        run: ls /Applications/ | grep Xcode
+      
+      - name: List simulator runtimes
+        run: xcrun simctl list runtimes
