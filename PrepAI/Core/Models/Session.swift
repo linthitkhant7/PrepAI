@@ -37,7 +37,14 @@ class Session {
     var date: Date
     var result: Score
     
-    init(category: CategoryType, question: String, transcript: String, duration: TimeInterval, date: Date, result: Score) {
+    init(
+        category: CategoryType,
+        question: String,
+        transcript: String,
+        duration: TimeInterval,
+        date: Date,
+        result: Score
+    ) {
         self.category = category
         self.question = question
         self.transcript = transcript

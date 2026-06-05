@@ -30,7 +30,13 @@ struct PrepAITests {
         let structureCriterion = Criterion(score: 3.3, strength: "interesting story", weakness: "weak outcome")
         let depthCriterion = Criterion(score: 4.4, strength: "wide variety", weakness: "unsaturated options")
         let overallCriterion = Criterion(score: 5.5, strength: "good presentation", weakness: "soft tone")
-        let score = Score(clarity: clarityCriterion, accuracy: accuracyCriterion, structure: structureCriterion, depth: depthCriterion, overall: overallCriterion)
+        let score = Score(
+            clarity: clarityCriterion,
+            accuracy: accuracyCriterion,
+            structure: structureCriterion,
+            depth: depthCriterion,
+            overall: overallCriterion
+        )
         #expect(score.clarity.score == 1.1)
         #expect(score.clarity.strength == "good vocabulary")
         #expect(score.clarity.weakness == "mixed meaning")
@@ -59,8 +65,21 @@ struct PrepAITests {
         let structureCriterion = Criterion(score: 3.3, strength: "interesting story", weakness: "weak outcome")
         let depthCriterion = Criterion(score: 4.4, strength: "wide variety", weakness: "unsaturated options")
         let overallCriterion = Criterion(score: 5.5, strength: "good presentation", weakness: "soft tone")
-        let score = Score(clarity: clarityCriterion, accuracy: accuracyCriterion, structure: structureCriterion, depth: depthCriterion, overall: overallCriterion)
-        let session = Session(category: categoryType, question: question, transcript: transcript, duration: duration, date: date, result: score)
+        let score = Score(
+            clarity: clarityCriterion,
+            accuracy: accuracyCriterion,
+            structure: structureCriterion,
+            depth: depthCriterion,
+            overall: overallCriterion
+        )
+        let session = Session(
+            category: categoryType,
+            question: question,
+            transcript: transcript,
+            duration: duration,
+            date: date,
+            result: score
+        )
         #expect(session.category.rawValue == "iOSSpecific")
         #expect(session.question == "Differences between Struct and Class?")
         #expect(session.transcript == "Struct is a value type and class is a reference type.")
