@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_26.2.app
+      
+      - name: Show project info
+        run: |
+          xcodebuild -scheme PrepAI -showBuildSettings | grep -E "IPHONEOS_DEPLOYMENT_TARGET|SWIFT_VERSION|XCODE_VERSION"
+      
+      - name: Run tests
+        run: |
+          xcodebuild test \
+            -scheme PrepAI \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.2' \
+            -resultBundlePath TestResults
