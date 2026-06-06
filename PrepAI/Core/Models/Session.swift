@@ -21,10 +21,18 @@ struct Score: Codable {
     let overall: Criterion
 }
 
-enum CategoryType: String, Codable {
+enum CategoryType: String, Codable, CaseIterable {
     case systemDesign
     case behavioral
     case iOSSpecific
+    
+    var displayName: String {
+        switch self {
+        case .systemDesign: return "System Design"
+        case .behavioral: return "Behavioral"
+        case .iOSSpecific: return "iOS Specific"
+        }
+    }
 }
 
 @Model

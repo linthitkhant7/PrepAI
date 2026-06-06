@@ -10,6 +10,9 @@ import SwiftData
 
 @main
 struct PrepAIApp: App {
+    
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding: Bool = false
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Session.self
@@ -25,7 +28,11 @@ struct PrepAIApp: App {
 
     var body: some Scene {
         WindowGroup {
-            Text("PrepAI")
+            if hasCompletedOnboarding {
+                HomeView()
+            } else {
+                OnboardingView()
+            }
         }
         .modelContainer(sharedModelContainer)
     }
