@@ -10,6 +10,35 @@ import Testing
 import Foundation
 
 struct PrepAITests {
+    
+    func makeSession(overallScore: Double) -> Session {
+        let categoryType = CategoryType.iOSSpecific
+        let question = "Differences between Struct and Class?"
+        let transcript = "Struct is a value type and class is a reference type."
+        let duration = TimeInterval(3)
+        let date = Date(timeIntervalSince1970: 0)
+        let clarityCriterion = Criterion(score: 1.1, strength: "good vocabulary", weakness: "mixed meaning")
+        let accuracyCriterion = Criterion(score: 2.2, strength: "smooth connection", weakness: "short explaination")
+        let structureCriterion = Criterion(score: 3.3, strength: "interesting story", weakness: "weak outcome")
+        let depthCriterion = Criterion(score: 4.4, strength: "wide variety", weakness: "unsaturated options")
+        let overallCriterion = Criterion(score: overallScore, strength: "good presentation", weakness: "soft tone")
+        let score = Score(
+            clarity: clarityCriterion,
+            accuracy: accuracyCriterion,
+            structure: structureCriterion,
+            depth: depthCriterion,
+            overall: overallCriterion
+        )
+        let session = Session(
+            category: categoryType,
+            question: question,
+            transcript: transcript,
+            duration: duration,
+            date: date,
+            result: score
+        )
+        return session
+    }
 
     @Test func categoryTypeHasAllCases() {
         #expect(CategoryType.systemDesign.rawValue == "systemDesign")
@@ -55,31 +84,7 @@ struct PrepAITests {
     }
     
     @Test func sessionCanBeCreated() {
-        let categoryType = CategoryType.iOSSpecific
-        let question = "Differences between Struct and Class?"
-        let transcript = "Struct is a value type and class is a reference type."
-        let duration = TimeInterval(3)
-        let date = Date(timeIntervalSince1970: 0)
-        let clarityCriterion = Criterion(score: 1.1, strength: "good vocabulary", weakness: "mixed meaning")
-        let accuracyCriterion = Criterion(score: 2.2, strength: "smooth connection", weakness: "short explaination")
-        let structureCriterion = Criterion(score: 3.3, strength: "interesting story", weakness: "weak outcome")
-        let depthCriterion = Criterion(score: 4.4, strength: "wide variety", weakness: "unsaturated options")
-        let overallCriterion = Criterion(score: 5.5, strength: "good presentation", weakness: "soft tone")
-        let score = Score(
-            clarity: clarityCriterion,
-            accuracy: accuracyCriterion,
-            structure: structureCriterion,
-            depth: depthCriterion,
-            overall: overallCriterion
-        )
-        let session = Session(
-            category: categoryType,
-            question: question,
-            transcript: transcript,
-            duration: duration,
-            date: date,
-            result: score
-        )
+        let session = makeSession(overallScore: 5.5)
         #expect(session.category.rawValue == "iOSSpecific")
         #expect(session.question == "Differences between Struct and Class?")
         #expect(session.transcript == "Struct is a value type and class is a reference type.")
@@ -100,5 +105,15 @@ struct PrepAITests {
         #expect(session.result.overall.score == 5.5)
         #expect(session.result.overall.strength == "good presentation")
         #expect(session.result.overall.weakness == "soft tone")
+    }
+    
+    @Test func averageSessionsScoreCanBeCalculatedWithZeroSession() {
+        #expect(ScoreCalculator.averageSessionScore([]) == 0)
+    }
+    
+    @Test func averageSessionScoreCanBeCalculated() {
+        let sessionOne = makeSession(overallScore: 10)
+        let sessionTwo = makeSession(overallScore: 5)
+        #expect(ScoreCalculator.averageSessionScore([sessionOne, sessionTwo]) == 7.5)
     }
 }

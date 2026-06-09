@@ -29,7 +29,7 @@ struct PrepAIApp: App {
     var body: some Scene {
         WindowGroup {
             if hasCompletedOnboarding {
-                HomeView()
+                MainTabView()
             } else {
                 OnboardingView()
             }
