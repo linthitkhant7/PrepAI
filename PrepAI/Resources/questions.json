@@ -1,0 +1,14 @@
+[
+    {
+        "text": "What is the difference between a struct and a class in Swift?",
+        "category": "iOSSpecific"
+    },
+    {
+        "text": "How would you design a URL shortening service?",
+        "category": "systemDesign"
+    },
+    {
+        "text": "Tell me about a time you handled conflict on a team.",
+        "category": "behavioral"
+    }
+]

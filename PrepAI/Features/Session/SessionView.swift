@@ -8,12 +8,18 @@
 import SwiftUI
 
 struct SessionView: View {
-    let category: CategoryType
+    @State private var viewModel: SessionViewModel
+    
+    init(category: CategoryType) {
+        _viewModel = State(initialValue: SessionViewModel(category: category))
+    }
     
     var body: some View {
         VStack {
-            Text(category.displayName)
-            Text("What is the difference between a struct and a class in swift?")
+            Text(viewModel.category.displayName)
+            Text(
+                viewModel.currentQuestion?.text ?? "Nothing to display"
+            )
         }
     }
 }
