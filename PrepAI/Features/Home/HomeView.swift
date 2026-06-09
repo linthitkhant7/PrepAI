@@ -13,13 +13,16 @@ struct HomeView: View {
     @Query var sessions: [Session]
     
     var body: some View {
-        VStack {
-            Text("PrepAI")
-            Text("\(ScoreCalculator.averageSessionScore(sessions))")
-            ForEach(CategoryType.allCases, id: \.self) { category in
-                Button(category.displayName) {
-                    
+        NavigationStack {
+            VStack {
+                Text("PrepAI")
+                Text("\(ScoreCalculator.averageSessionScore(sessions))")
+                ForEach(CategoryType.allCases, id: \.self) { category in
+                    NavigationLink(category.displayName, value: category)
                 }
+            }
+            .navigationDestination(for: CategoryType.self) { category in
+                SessionView(category: category)
             }
         }
     }
