@@ -116,4 +116,15 @@ struct PrepAITests {
         let sessionTwo = makeSession(overallScore: 5)
         #expect(ScoreCalculator.averageSessionScore([sessionOne, sessionTwo]) == 7.5)
     }
+    
+    @Test func questionsCanBeFilteredByCategory() {
+        let questions = [
+            Question(text: "Q1", category: .behavioral),
+            Question(text: "Q2", category: .behavioral),
+            Question(text: "Q3", category: .iOSSpecific)
+        ]
+        let viewModel = SessionViewModel(category: .behavioral, allQuestions: questions)
+        #expect(viewModel.questions.count == 2)
+        #expect(viewModel.questions.allSatisfy { $0.category == .behavioral })
+    }
 }
