@@ -169,7 +169,7 @@
 		F92EBFD82FCF069D006C0257 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = 1;
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 2650;
 				LastUpgradeCheck = 2650;
 				TargetAttributes = {
@@ -400,6 +400,8 @@
 				DEVELOPMENT_TEAM = 53FDVL354X;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "PrepAI uses the microphone to record your spoken interview answers so they can be transcribed and reviewed.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "PrepAI uses speech recognition to transcribe your spoken answers into text on your device.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -433,6 +435,8 @@
 				DEVELOPMENT_TEAM = 53FDVL354X;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "PrepAI uses the microphone to record your spoken interview answers so they can be transcribed and reviewed.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "PrepAI uses speech recognition to transcribe your spoken answers into text on your device.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
