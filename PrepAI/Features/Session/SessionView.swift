@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SessionView: View {
     @State private var viewModel: SessionViewModel
+    @State private var speechRecognizer = SpeechRecognizer()
     
     init(category: CategoryType) {
         _viewModel = State(initialValue: SessionViewModel(category: category))
@@ -20,6 +21,18 @@ struct SessionView: View {
             Text(
                 viewModel.currentQuestion?.text ?? "Nothing to display"
             )
+            Text("\(speechRecognizer.elapsedSeconds)")
+            Button(speechRecognizer.isRecording ? "Stop" : "Record") {
+                if speechRecognizer.isRecording {
+                    speechRecognizer.stopTranscribing()
+                } else {
+                    speechRecognizer.startTranscribing()
+                }
+            }
+            TextEditor(text: $speechRecognizer.transcript)
+        }
+        .onAppear {
+            speechRecognizer.requestAuthorization()
         }
     }
 }
