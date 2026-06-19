@@ -1,14 +1,259 @@
 [
     {
         "text": "What is the difference between a struct and a class in Swift?",
-        "category": "iOSSpecific"
+        "category": "iOSSpecific",
+        "coreKeyPoints": [
+            "Structs are value types",
+            "Classes are reference types",
+            "Value types are copied on assignment",
+            "Reference types share a single instance",
+            "Classes support inheritance",
+            "Structs do not support inheritance"
+        ],
+        "bonusKeyPoints": [
+            "Structs get an automatic memberwise initializer",
+            "Classes use ARC",
+            "Mutating a struct property requires the mutating keyword",
+            "Reference types are compared with the identity operator ===",
+            "Classes can have deinitializers",
+            "Protocols and composition replace inheritance for structs"
+        ]
+    },
+    {
+        "text": "Explain how ARC manages memory and how retain cycles happen.",
+        "category": "iOSSpecific",
+        "coreKeyPoints": [
+            "ARC deallocates an object when its strong reference count reaches zero",
+            "A retain cycle is two objects holding strong references to each other",
+            "A weak reference does not increase the retain count",
+            "A closure capturing self strongly can cause a retain cycle",
+            "A [weak self] capture list breaks the cycle"
+        ],
+        "bonusKeyPoints": [
+            "A weak reference becomes nil when the object is deallocated",
+            "An unowned reference does not increase the retain count",
+            "An unowned reference assumes the object outlives it",
+            "ARC is compile-time, not a runtime garbage collector",
+            "Delegate properties are commonly declared weak"
+        ]
+    },
+    {
+        "text": "What is the difference between escaping and non-escaping closures?",
+        "category": "iOSSpecific",
+        "coreKeyPoints": [
+            "A non-escaping closure runs before the function returns",
+            "An escaping closure can be called after the function returns",
+            "An escaping closure is marked with @escaping",
+            "An escaping closure must capture self explicitly"
+        ],
+        "bonusKeyPoints": [
+            "Completion handlers are typically escaping",
+            "Non-escaping is the default",
+            "Non-escaping enables compiler optimizations",
+            "Stored closures must be escaping",
+            "Escaping closures can extend the lifetime of captured values"
+        ]
+    },
+    {
+        "text": "How does SwiftUI decide when to re-render a view?",
+        "category": "iOSSpecific",
+        "coreKeyPoints": [
+            "SwiftUI re-evaluates body when a source of truth changes",
+            "@State holds local view-owned state",
+            "@Binding passes mutable state without owning it",
+            "@Observable triggers updates when an observed property changes"
+        ],
+        "bonusKeyPoints": [
+            "SwiftUI views are value types",
+            "SwiftUI diffs the view tree and updates only what changed",
+            "Recreating a view is cheap because views are lightweight",
+            "Identity affects whether SwiftUI reuses or replaces a view",
+            "Environment changes can also trigger re-evaluation"
+        ]
+    },
+    {
+        "text": "Explain value semantics versus reference semantics.",
+        "category": "iOSSpecific",
+        "coreKeyPoints": [
+            "Value semantics means each copy is independent",
+            "Reference semantics means copies share the same instance",
+            "Value types avoid unintended shared mutable state",
+            "Reference types provide shared identity"
+        ],
+        "bonusKeyPoints": [
+            "Swift uses copy-on-write for standard library value types",
+            "Identity is compared with the === operator for reference types",
+            "Value types are safer across concurrency boundaries",
+            "Apple recommends preferring value types by default"
+        ]
+    },
+    {
+        "text": "What is the difference between async/await and completion handlers?",
+        "category": "iOSSpecific",
+        "coreKeyPoints": [
+            "Completion handlers pass results through escaping closures",
+            "async/await writes asynchronous code in a sequential style",
+            "Errors propagate with try in async functions",
+            "await suspends the function without blocking the thread"
+        ],
+        "bonusKeyPoints": [
+            "A Task provides structured concurrency",
+            "async/await reduces closure nesting",
+            "Tasks support cancellation",
+            "async let runs work concurrently",
+            "Completion handlers can be forgotten or called twice"
+        ]
     },
     {
         "text": "How would you design a URL shortening service?",
-        "category": "systemDesign"
+        "category": "systemDesign",
+        "coreKeyPoints": [
+            "The core is a mapping from a short code to a long URL",
+            "Short codes can be generated by base62 encoding an ID",
+            "Short codes can alternatively be generated by hashing the URL",
+            "A key-value store fits the short-code-to-URL lookup",
+            "Reads are cached because the workload is read-heavy"
+        ],
+        "bonusKeyPoints": [
+            "Hash-based codes require collision handling",
+            "A 301 redirect is permanent",
+            "A 302 redirect allows click tracking",
+            "Distributed ID generation avoids a single counter bottleneck",
+            "Expired links need a cleanup or TTL strategy",
+            "A CDN can serve redirects closer to users"
+        ]
+    },
+    {
+        "text": "How would you design a news feed like Twitter or Instagram?",
+        "category": "systemDesign",
+        "coreKeyPoints": [
+            "Fan-out on write precomputes feeds when a post is created",
+            "Fan-out on read assembles feeds at request time",
+            "Precomputed feeds are cached for fast reads",
+            "Posts and the social graph are stored separately"
+        ],
+        "bonusKeyPoints": [
+            "A hybrid model handles high-follower accounts",
+            "Media is delivered through a CDN",
+            "Feeds are paginated rather than loaded all at once",
+            "A ranking step orders posts beyond reverse chronological",
+            "Fan-out on write is expensive for users with many followers"
+        ]
+    },
+    {
+        "text": "How would you design a chat or messaging system like WhatsApp?",
+        "category": "systemDesign",
+        "coreKeyPoints": [
+            "WebSockets provide persistent connections for real-time delivery",
+            "Messages are queued for offline users and delivered on reconnect",
+            "Message history is stored in a database partitioned by conversation",
+            "Delivery and read status are tracked per message"
+        ],
+        "bonusKeyPoints": [
+            "A presence service tracks online status",
+            "Connection servers are separated from storage for scaling",
+            "Group chat fans a message out to multiple recipients",
+            "Message ordering is preserved per conversation",
+            "End-to-end encryption protects message contents"
+        ]
+    },
+    {
+        "text": "How would you design a rate limiter?",
+        "category": "systemDesign",
+        "coreKeyPoints": [
+            "Token bucket allows bursts up to a fixed capacity",
+            "Leaky bucket processes requests at a constant rate",
+            "Sliding window counts requests over a moving time window",
+            "Counters are stored in a fast shared store like Redis"
+        ],
+        "bonusKeyPoints": [
+            "Distributed limiting needs a shared counter across servers",
+            "Requests over the limit are rejected with HTTP 429",
+            "Fixed-window counters can spike at window boundaries",
+            "Limits can be scoped per user, per IP, or per endpoint",
+            "A Retry-After header tells clients when to retry"
+        ]
+    },
+    {
+        "text": "How would you design an image or video upload and storage service?",
+        "category": "systemDesign",
+        "coreKeyPoints": [
+            "Media is stored in object storage rather than a database",
+            "Only metadata and references are stored in the database",
+            "Presigned URLs let clients upload directly to storage",
+            "Content is served through a CDN"
+        ],
+        "bonusKeyPoints": [
+            "Media is processed asynchronously for transcoding",
+            "Thumbnails are generated in a background job",
+            "Large uploads use chunked or multipart upload",
+            "Video is delivered with adaptive bitrate streaming",
+            "Uploaded files are validated for type and size"
+        ]
     },
     {
         "text": "Tell me about a time you handled conflict on a team.",
-        "category": "behavioral"
+        "category": "behavioral",
+        "coreKeyPoints": [
+            "Describes a specific situation",
+            "States the task or responsibility involved",
+            "Describes the actions the candidate personally took",
+            "States the outcome or result",
+            "Mentions the other person's perspective",
+            "Mentions a lesson learned"
+        ],
+        "bonusKeyPoints": []
+    },
+    {
+        "text": "Tell me about a time you failed and what you learned.",
+        "category": "behavioral",
+        "coreKeyPoints": [
+            "Describes a specific situation",
+            "States the task or responsibility involved",
+            "Describes the actions the candidate personally took",
+            "States the outcome or result",
+            "Takes personal ownership of the failure",
+            "States a specific lesson learned"
+        ],
+        "bonusKeyPoints": []
+    },
+    {
+        "text": "Describe a time you had to meet a tight deadline.",
+        "category": "behavioral",
+        "coreKeyPoints": [
+            "Describes a specific situation",
+            "States the task or responsibility involved",
+            "Describes the actions the candidate personally took",
+            "States the outcome or result",
+            "Mentions how work was prioritized",
+            "Mentions communicating trade-offs to stakeholders"
+        ],
+        "bonusKeyPoints": []
+    },
+    {
+        "text": "Tell me about a time you received difficult feedback.",
+        "category": "behavioral",
+        "coreKeyPoints": [
+            "Describes a specific situation",
+            "States the task or responsibility involved",
+            "Describes the actions the candidate personally took",
+            "States the outcome or result",
+            "Describes a non-defensive reaction to the feedback",
+            "States a resulting improvement"
+        ],
+        "bonusKeyPoints": []
+    },
+    {
+        "text": "Describe a time you led a project or took initiative.",
+        "category": "behavioral",
+        "coreKeyPoints": [
+            "Describes a specific situation",
+            "States the task or responsibility involved",
+            "Describes the actions the candidate personally took",
+            "States the outcome or result",
+            "Clarifies the candidate's personal role versus the team",
+            "Mentions a leadership lesson learned"
+        ],
+        "bonusKeyPoints": []
     }
 ]

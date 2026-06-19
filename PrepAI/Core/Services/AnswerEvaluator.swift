@@ -10,7 +10,6 @@ protocol AnswerEvaluator {
 }
 
 enum EvaluationError: Error {
-//    case modelUnavailable(reason: UnavailabilityReason)
     case modelUnavailable
     case generationFailed
     case guardrailTriggered

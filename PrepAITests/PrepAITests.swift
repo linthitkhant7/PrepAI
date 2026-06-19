@@ -119,9 +119,9 @@ struct PrepAITests {
     
     @Test func questionsCanBeFilteredByCategory() {
         let questions = [
-            Question(text: "Q1", category: .behavioral),
-            Question(text: "Q2", category: .behavioral),
-            Question(text: "Q3", category: .iOSSpecific)
+            Question(text: "Q1", category: .behavioral, coreKeyPoints: [], bonusKeyPoints: []),
+            Question(text: "Q2", category: .behavioral, coreKeyPoints: [], bonusKeyPoints: []),
+            Question(text: "Q3", category: .iOSSpecific, coreKeyPoints: [], bonusKeyPoints: [])
         ]
         let viewModel = SessionViewModel(category: .behavioral, allQuestions: questions)
         #expect(viewModel.questions.count == 2)
