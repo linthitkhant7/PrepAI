@@ -13,4 +13,5 @@ enum EvaluationError: Error {
     case modelUnavailable
     case generationFailed
     case guardrailTriggered
+    case transcriptTooShort
 }
