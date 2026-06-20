@@ -69,7 +69,7 @@ actor FoundationModelsEvaluator: AnswerEvaluator {
         """
     }
 
-    private func buildScore(from generated: GeneratedScore) -> Score {
+    func buildScore(from generated: GeneratedScore) -> Score {
         let clarity = Criterion(
             score: Double(generated.clarityScore),
             strength: generated.clarityStrength,

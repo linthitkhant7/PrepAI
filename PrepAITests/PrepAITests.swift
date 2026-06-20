@@ -127,4 +127,108 @@ struct PrepAITests {
         #expect(viewModel.questions.count == 2)
         #expect(viewModel.questions.allSatisfy { $0.category == .behavioral })
     }
+    
+    func makeQuestion() -> Question {
+        return Question(
+            text: "test",
+            category: .iOSSpecific,
+            coreKeyPoints: [],
+            bonusKeyPoints: []
+        )
+    }
+    
+    @Test func emptyTranscriptThrows() async {
+        let evaluator = await FoundationModelsEvaluator()
+        await #expect(throws: EvaluationError.transcriptTooShort) {
+            try await evaluator.evaluate(transcript: "", question: makeQuestion())
+        }
+    }
+    
+    @Test func whitespaceTranscriptionThrows() async {
+        let evaluator = await FoundationModelsEvaluator()
+        await #expect(throws: EvaluationError.transcriptTooShort) {
+            try await evaluator.evaluate(transcript: "  ", question: makeQuestion())
+        }
+    }
+    
+    func makeGeneratedScore() -> GeneratedScore {
+        return GeneratedScore(
+            coveredCorePoints: 4,
+            clarityStrength: "clear",
+            clarityWeakness: "cw",
+            clarityScore: 2,
+            accuracyStrength: "accurate",
+            accuracyWeakness: "aw",
+            accuracyScore: 4,
+            structureStrength: "structured",
+            structureWeakness: "sw",
+            structureScore: 4,
+            depthStrength: "deep",
+            depthWeakness: "dw",
+            depthScore: 2
+        )
+    }
+    
+    @Test func overallScoreIsAverageOfFour() async {
+        let evaluator = await FoundationModelsEvaluator()
+        let score = await evaluator.buildScore(from: makeGeneratedScore())
+        await #expect(score.overall.score == 3.0)
+    }
+    
+    @Test func criteriaMapFromGenerated() async {
+        let evaluator = await FoundationModelsEvaluator()
+        let score = await evaluator.buildScore(from: makeGeneratedScore())
+        await #expect(score.clarity.score == 2.0)
+        await #expect(score.accuracy.score == 4.0)
+        await #expect(score.accuracy.strength == "accurate")
+    }
+    
+    @Test func overallUsesStrongestAndWeakest() async {
+        let evaluator = await FoundationModelsEvaluator()
+        let score = await evaluator.buildScore(from: makeGeneratedScore())
+        await #expect(score.overall.strength == "accurate")
+        await #expect(score.overall.weakness == "cw")
+    }
+    
+    struct FakeEvaluator: AnswerEvaluator {
+        var result: Result<Score, EvaluationError>
+        
+        func evaluate(transcript: String, question: Question) async throws -> Score {
+            switch result {
+            case .success(let score):
+                return score
+            case .failure(let error):
+                throw error
+            }
+        }
+    }
+    
+    @Test func submitSuccessMovesToScored() async {
+        let score = makeSession(overallScore: 5.0).result
+        let viewModel = await SessionViewModel(
+            category: .iOSSpecific,
+            allQuestions: [makeQuestion()],
+            evaluator: FakeEvaluator(result: .success(score))
+        )
+        await viewModel.submit(transcript: "some answer")
+        
+        guard case .scored = await viewModel.state else {
+            Issue.record("expected scored state")
+            return
+        }
+    }
+    
+    @Test func submitFailureMovesToError() async {
+        let viewModel = await SessionViewModel(
+            category: .iOSSpecific,
+            allQuestions: [makeQuestion()],
+            evaluator: FakeEvaluator(result: .failure(.modelUnavailable))
+        )
+        await viewModel.submit(transcript: "some answer")
+        
+        guard case .error = await viewModel.state else {
+            Issue.record("expected error state")
+            return
+        }
+    }
 }
