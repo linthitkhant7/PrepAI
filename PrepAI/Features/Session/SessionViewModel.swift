@@ -22,7 +22,7 @@ class SessionViewModel {
     private(set) var state: SessionState = .idle
     
     private let evaluator: AnswerEvaluator
-    let speechRecognizer = SpeechRecognizer()
+    var speechRecognizer = SpeechRecognizer()
 
     let category: CategoryType
     var questions: [Question] = []
