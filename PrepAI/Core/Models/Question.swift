@@ -10,4 +10,6 @@ import Foundation
 struct Question: Codable {
     let text: String
     let category: CategoryType
+    let coreKeyPoints: [String]
+    let bonusKeyPoints: [String]
 }
