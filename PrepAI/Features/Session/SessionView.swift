@@ -75,15 +75,8 @@ struct IdleStateView: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                 Spacer()
-                Button {
+                CircleButton(icon: "mic", color: AppTheme.send) {
                     viewModel.startRecording()
-                } label: {
-                    Image(systemName: "mic")
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                        .frame(width: 60, height: 60)
-                        .background(AppTheme.send)
-                        .clipShape(.circle)
                 }
             }
             .padding()
@@ -114,15 +107,8 @@ struct RecordingStateView: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                 Spacer()
-                Button {
+                CircleButton(icon: "stop", color: AppTheme.stop) {
                     viewModel.stopRecording()
-                } label: {
-                    Image(systemName: "stop")
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                        .frame(width: 60, height: 60)
-                        .background(AppTheme.stop)
-                        .clipShape(.circle)
                 }
             }
             .padding()
@@ -153,17 +139,10 @@ struct TranscriptReadyStateView: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                 Spacer()
-                Button {
+                CircleButton(icon: "paperplane", color: AppTheme.send) {
                     Task {
                         await viewModel.submit(transcript: viewModel.speechRecognizer.transcript)
                     }
-                } label: {
-                    Image(systemName: "paperplane")
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                        .frame(width: 60, height: 60)
-                        .background(AppTheme.send)
-                        .clipShape(.circle)
                 }
             }
             .padding()
@@ -194,17 +173,10 @@ struct EvaluatingStateView: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                 Spacer()
-                Button {
+                CircleButton(icon: "mic", color: AppTheme.send) {
                     Task {
                         await viewModel.submit(transcript: viewModel.speechRecognizer.transcript)
                     }
-                } label: {
-                    Image(systemName: "mic")
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                        .frame(width: 60, height: 60)
-                        .background(AppTheme.send)
-                        .clipShape(.circle)
                 }
                 .disabled(true)
             }
@@ -237,15 +209,8 @@ struct ScoredStateView: View {
                     .font(.subheadline)
                     .foregroundStyle(AppTheme.next)
                 Spacer()
-                Button {
+                CircleButton(icon: "chevron.right", color: AppTheme.next) {
                     viewModel.nextQuestion()
-                } label: {
-                    Image(systemName: "chevron.right")
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                        .frame(width: 60, height: 60)
-                        .background(AppTheme.next)
-                        .clipShape(.circle)
                 }
             }
             .padding()
@@ -277,17 +242,10 @@ struct ErrorStateView: View {
                     .font(.subheadline)
                     .foregroundStyle(AppTheme.retry)
                 Spacer()
-                Button {
+                CircleButton(icon: "arrow.trianglehead.2.clockwise", color: AppTheme.retry) {
                     Task {
                         await viewModel.retry(transcript: viewModel.speechRecognizer.transcript)
                     }
-                } label: {
-                    Image(systemName: "arrow.trianglehead.2.clockwise")
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                        .frame(width: 60, height: 60)
-                        .background(AppTheme.retry)
-                        .clipShape(.circle)
                 }
             }
             .padding()
