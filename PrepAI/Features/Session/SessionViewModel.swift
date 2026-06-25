@@ -33,6 +33,8 @@ class SessionViewModel {
         return questions[currentIndex]
     }
     
+    var showingEndAlert = false
+    
     init(
         category: CategoryType,
         allQuestions: [Question] = QuestionLoader.loadAllQuestion(),
@@ -75,4 +77,13 @@ class SessionViewModel {
         state = .transcriptReady
     }
     
+    func clearTranscript() {
+        speechRecognizer.stopTranscribing()
+        speechRecognizer.transcript.removeAll()
+        state = .idle
+    }
+    
+    func showAlert() {
+        showingEndAlert = true
+    }
 }
