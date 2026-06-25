@@ -61,12 +61,6 @@ struct SessionView: View {
 
 #Preview {
     SessionView(category: .iOSSpecific)
-//    IdleStateView(viewModel: SessionViewModel(category: .iOSSpecific))
-//    RecordingStateView(viewModel: SessionViewModel(category: .iOSSpecific))
-//    TranscriptReadyStateView(viewModel: SessionViewModel(category: .iOSSpecific))
-//    EvaluatingStateView(viewModel: SessionViewModel(category: .iOSSpecific))
-//    ScoredStateView(viewModel: SessionViewModel(category: .iOSSpecific), score: Score(clarity: Criterion(score: 5.0, strength: "", weakness: ""), accuracy: Criterion(score: 5.0, strength: "", weakness: ""), structure: Criterion(score: 5.0, strength: "", weakness: ""), depth: Criterion(score: 5.0, strength: "", weakness: ""), overall: Criterion(score: 5.0, strength: "", weakness: "")))
-//    ErrorStateView(viewModel: SessionViewModel(category: .iOSSpecific), error: EvaluationError.transcriptTooShort)
 }
 
 struct IdleStateView: View {
