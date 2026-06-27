@@ -22,4 +22,5 @@ enum AppTheme {
     static let stop = Color.red
     static let retry = Color.orange
     static let next = Color.green
+    static let feedback = Color.purple
 }
