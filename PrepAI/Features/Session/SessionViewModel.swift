@@ -17,6 +17,7 @@ class SessionViewModel {
         case evaluating
         case scored(Score)
         case error(EvaluationError)
+        case sessionComplete
     }
     
     private(set) var state: SessionState = .idle
@@ -34,6 +35,16 @@ class SessionViewModel {
     }
     
     var showingEndAlert = false
+    
+    var remainingSeconds = 900
+    private var timer: Timer?
+    var formattedTime: String {
+        let minutes = remainingSeconds / 60
+        let seconds = remainingSeconds % 60
+        return String(format: "%02d:%02d", minutes, seconds)
+    }
+    
+    private(set) var hasStarted = false
     
     init(
         category: CategoryType,
@@ -85,5 +96,29 @@ class SessionViewModel {
     
     func showAlert() {
         showingEndAlert = true
+    }
+    
+    func startTimer() {
+        guard timer == nil else { return }
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { [weak self] _ in
+            guard let self else { return }
+            if self.remainingSeconds > 0 {
+                self.remainingSeconds -= 1
+            } else {
+                self.timerDidFinish()
+            }
+        })
+    }
+    
+    func timerDidFinish() {
+        timer?.invalidate()
+        timer = nil
+        speechRecognizer.stopTranscribing()
+        state = .sessionComplete
+    }
+    
+    func startSession() {
+        hasStarted = true
+        startTimer()
     }
 }

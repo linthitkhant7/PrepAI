@@ -231,4 +231,10 @@ struct PrepAITests {
             return
         }
     }
+    
+    @Test func formattedTimeShowsMinutesAndSeconds() {
+        let viewModel = SessionViewModel(category: .iOSSpecific, allQuestions: [])
+        viewModel.remainingSeconds = 65
+        #expect(viewModel.formattedTime == "01:05")
+    }
 }

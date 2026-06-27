@@ -15,52 +15,86 @@ struct SessionView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: AppTheme.spacingSmall) {
-            Text(viewModel.category.displayName)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            Text(
-                viewModel.currentQuestion?.text ?? "Nothing to display"
-            )
-            .font(.title2)
-            .fontWeight(.bold)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            
-            switch viewModel.state {
-            case .idle:
-                IdleStateView(viewModel: viewModel)
-            case .recording:
-                RecordingStateView(viewModel: viewModel)
-            case .transcriptReady:
-                TranscriptReadyStateView(viewModel: viewModel)
-            case .evaluating:
-                EvaluatingStateView(viewModel: viewModel)
-            case .scored(let score):
-                ScoredStateView(viewModel: viewModel, score: score)
-            case .error(let error):
-                ErrorStateView(viewModel: viewModel, error: error)
-            }
-            Spacer()
-        }
-        .padding(.horizontal, AppTheme.spacingMedium)
-        .onAppear {
-            viewModel.speechRecognizer.requestAuthorization()
-        }
-        .navigationBarBackButtonHidden(true)
-        .toolbar(.hidden, for: .tabBar)
-        .alert("End Interview?", isPresented: $viewModel.showingEndAlert) {
-            Button("Yes", role: .destructive) {
+        if case .sessionComplete = viewModel.state {
+            SessionCompleteView(viewModel: viewModel)
+                .navigationBarBackButtonHidden(true)
+                .toolbar(.hidden, for: .tabBar)
+        } else {
+            VStack(alignment: .leading, spacing: AppTheme.spacingSmall) {
+                HStack {
+                    Text(viewModel.category.displayName)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text(viewModel.formattedTime)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                Text(
+                    viewModel.currentQuestion?.text ?? "Nothing to display"
+                )
+                .font(.title2)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 
+                switch viewModel.state {
+                case .idle:
+                    IdleStateView(viewModel: viewModel)
+                case .recording:
+                    RecordingStateView(viewModel: viewModel)
+                case .transcriptReady:
+                    TranscriptReadyStateView(viewModel: viewModel)
+                case .evaluating:
+                    EvaluatingStateView(viewModel: viewModel)
+                case .scored(let score):
+                    ScoredStateView(viewModel: viewModel, score: score)
+                case .error(let error):
+                    ErrorStateView(viewModel: viewModel, error: error)
+                case .sessionComplete:
+                    SessionCompleteView(viewModel: viewModel)
+                }
+                Spacer()
             }
-            Button("No", role: .cancel) { }
-        } message: {
-            Text("This will end your session and save your current progress.")
+            .padding(.horizontal, AppTheme.spacingMedium)
+            .onAppear {
+                viewModel.speechRecognizer.requestAuthorization()
+            }
+            .navigationBarBackButtonHidden(true)
+            .toolbar(.hidden, for: .tabBar)
+            .alert("End Interview?", isPresented: $viewModel.showingEndAlert) {
+                Button("Yes", role: .destructive) {
+                    
+                }
+                Button("No", role: .cancel) { }
+            } message: {
+                Text("This will end your session and save your current progress.")
+            }
+            .overlay {
+                if !viewModel.hasStarted {
+                    ZStack {
+                        Rectangle()
+                            .fill(.ultraThinMaterial)
+                            .ignoresSafeArea()
+                        Button {
+                            viewModel.startSession()
+                        } label: {
+                            Text("Tap to start your interview session")
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                                .padding()
+                                .background(AppTheme.send)
+                                .clipShape(Capsule())
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 #Preview {
-    SessionView(category: .iOSSpecific)
+//    SessionView(category: .iOSSpecific)
+    SessionCompleteView(viewModel: SessionViewModel(category: .iOSSpecific))
 }
 
 struct IdleStateView: View {
@@ -250,5 +284,51 @@ struct ErrorStateView: View {
             }
             .padding()
         }
+    }
+}
+
+struct
+SessionCompleteView: View {
+    let viewModel: SessionViewModel
+    @Environment(\.dismiss) private var dismiss
+    	
+    var body: some View {
+        VStack(spacing: AppTheme.spacingMedium) {
+            Spacer()
+            Image(systemName: "checkmark")
+                .font(.system(size: 80))
+                .foregroundStyle(.primary)
+            Text("Session complete.")
+                .font(.title)
+                .fontWeight(.bold)
+            Spacer()
+            Text("Evaluated on-device · nothing was uploaded")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            HStack {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.title2)
+                        .foregroundStyle(.black)
+                        .frame(width: 60, height: 60)
+                        .glassEffect()
+                }
+                Spacer()
+                Button {
+                    // see feedback - future screen
+                } label: {
+                    Label("See your feedback", systemImage: "apple.intelligence")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .padding()
+                        .background(AppTheme.feedback)
+                        .clipShape(Capsule())
+                }
+            }
+            .padding()
+        }
+        .frame(maxWidth: .infinity)
     }
 }
